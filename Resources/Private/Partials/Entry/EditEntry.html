@@ -1,0 +1,78 @@
+<!-- JQUERY -->
+<script src="{f:uri.resource(path:'Scripts/jquery-2.2.2.min.js')}"></script>
+
+<!-- JQUERY UI -->
+<script src="{f:uri.resource(path:'Scripts/jquery-ui-1.11.4/jquery-ui.min.js')}"></script>
+<link href="{f:uri.resource(path:'Scripts/jquery-ui-1.11.4/jquery-ui.min.css')}" type="text/css" rel="stylesheet">
+
+<!-- BOOTSTRAP SOURCE FILES -->
+<link href="{f:uri.resource(path:'Scripts/bootstrap-3.3.6/css/bootstrap.min.css')}" type="text/css" rel="stylesheet">
+<link href="{f:uri.resource(path:'Scripts/bootstrap-3.3.6/css/bootstrap-theme.min.css')}" type="text/css" rel="stylesheet">
+<script src="{f:uri.resource(path:'Scripts/bootstrap-3.3.6/js/bootstrap.min.js')}"></script>
+<script src="{f:uri.resource(path:'Scripts/bootstrap-3.3.6/js/npm.js')}"></script>
+
+<!-- MOMENT.JS -->
+<script src="{f:uri.resource(path:'Scripts/moment.js')}"></script>
+
+<!-- AVGRUND.JS -->
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/avgrund-master/js/avgrund.js"></script>
+<link href="{f:uri.resource(path:'Scripts/avgrund-master/css/avgrund.css')}" type="text/css" rel="stylesheet">
+
+<!-- KI_CAL SOURCE FILES -->
+<link href="{f:uri.resource(path:'CSS/Calendar.css')}" type="text/css" rel="stylesheet">
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/CreateCalendarView.js"></script>
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/NewEntry.js"></script>
+
+  <label for="entryTitle">Titel</label>
+  <br />
+  <f:form.textfield property="entryTitle" class="form-control" value='{detailedEntry.entryTitle}'/>
+  <br />
+  <label for="description">Beschreibung</label>
+  <br />
+  <f:form.textfield property="description" class="form-control" value='{detailedEntry.description}'/>
+  <br />
+  <label for="entryDate">Datum</label>
+  <br />
+  <f:form.textfield property="entryDate" class="form-control datepickerInputField" value='{detailedEntry.entryDate}'/>
+  <br />
+  <label for="startTime">Start-Zeit</label>
+  <br />
+  <f:form.textfield property="startTime" class="form-control" value='{detailedEntry.startTime}'/>
+  <br />
+  <label for="entryDate">End-Zeit</label>
+  <br />
+  <f:form.textfield property="endTime" class="form-control" value='{detailedEntry.endTime}'/>
+  <br />
+  <div style="border-bottom: 1px solid #EBEBEB"></div>
+  <br />
+  <label for="entryDate">Besucher</label>
+  <br />
+  <f:form.textfield property="visitor" class="form-control" value='{detailedEntry.visitor}'/>
+  <br />
+  <label for="entryDate">Firma</label>
+  <br />
+  <f:form.textfield property="company" class="form-control" value='{detailedEntry.company}'/>
+  <br />
+  <label for="entryDate">Kontakt</label>
+  <br />
+  <f:form.textfield property="contact" class="form-control" value='{detailedEntry.contact}'/>
+  <br />
+  <div style="border-bottom: 1px solid #EBEBEB"></div>
+  <br />
+  <label for="entryDate">Öffentlich</label>
+  <br />
+
+  <f:if condition="{detailedEntry.public}!==0">
+    <f:then>
+      <f:form.checkbox id='publicSelector' property="public" class="form-control" value='1' checked='{detailedEntry.public} == 1'/>
+    </f:then>
+    <f:else>
+      <f:form.checkbox property="public" class="form-control" value='1'/>
+    </f:else>
+  </f:if>
+
+  <br />
+  <label for="entryDate">Bild anhängen</label>
+  <br />
+  <f:form.upload property="image" name="image" value='<a href="{detailedEntry.description}"></a>'/>
+  <br />

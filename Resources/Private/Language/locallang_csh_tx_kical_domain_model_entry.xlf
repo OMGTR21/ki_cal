@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-03-23T09:07:35Z" product-name="ki_cal">
+		<header/>
+		<body>
+			<trans-unit id="entryTitle.description">
+				<source>entryTitle</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

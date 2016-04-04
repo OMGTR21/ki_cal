@@ -1,0 +1,44 @@
+<!-- JQUERY -->
+<script src="{f:uri.resource(path:'Scripts/jquery-2.2.2.min.js')}"></script>
+
+<!-- JQUERY UI -->
+<script src="{f:uri.resource(path:'Scripts/jquery-ui-1.11.4/jquery-ui.min.js')}"></script>
+<link href="{f:uri.resource(path:'Scripts/jquery-ui-1.11.4/jquery-ui.min.css')}" type="text/css" rel="stylesheet">
+
+<!-- BOOTSTRAP SOURCE FILES -->
+<link href="{f:uri.resource(path:'Scripts/bootstrap-3.3.6/css/bootstrap.min.css')}" type="text/css" rel="stylesheet">
+<link href="{f:uri.resource(path:'Scripts/bootstrap-3.3.6/css/bootstrap-theme.min.css')}" type="text/css" rel="stylesheet">
+<script src="{f:uri.resource(path:'Scripts/bootstrap-3.3.6/js/bootstrap.min.js')}"></script>
+<script src="{f:uri.resource(path:'Scripts/bootstrap-3.3.6/js/npm.js')}"></script>
+
+<!-- MOMENT.JS -->
+<script src="{f:uri.resource(path:'Scripts/moment.js')}"></script>
+
+<!-- AVGRUND.JS -->
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/avgrund-master/js/avgrund.js"></script>
+<link href="{f:uri.resource(path:'Scripts/avgrund-master/css/avgrund.css')}" type="text/css" rel="stylesheet">
+
+<!-- KI_CAL SOURCE FILES -->
+<link href="{f:uri.resource(path:'CSS/Calendar.css')}" type="text/css" rel="stylesheet">
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/CreateCalendarView.js"></script>
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/NewEntry.js"></script>
+
+<h2>Gefundene Einträge</h2><br />
+<f:for each="{queryResult}" as="result">
+  <ul class="searchResult">
+    <li><h4>{result.entryTitle}</h4></li>
+    <li>Datum: {result.entryDate}</li>
+    <li>Beschreibung: {result.description}</li>
+    <li>Start-Zeit: {result.startTime}</li>
+    <li>End-Zeit: {result.endTime}</li>
+    <li>Besucher: {result.visitor}</li>
+    <li>Firma: {result.company}</li>
+    <li>Kontakt: {result.contact}</li>
+    <li>Öffentlich: {result.public}</li>
+    <li>Bild: {result.image}</li>
+  </ul>
+  <hr>
+  <br />
+</f:for>
+
+<f:link.action action="show" controller="Calendar" class="btn btn-default">Zurück zum Kalender</f:link.action>

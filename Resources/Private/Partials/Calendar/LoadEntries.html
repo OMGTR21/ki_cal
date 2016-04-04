@@ -1,0 +1,21 @@
+<f:for each="{Events}" as="value">
+	<h1>
+		<script>
+			$(document).ready(function() {
+				$("[date='<f:format.date date='{value.eventDate}' format='d.m.Y' />']").
+				append('<br /><f:link.action action="list" controller="Event" arguments="{event : value}">{value.eventTitle}</f:link.action>');
+			});
+		</script>
+	</h1>
+</f:for>
+
+<f:for each="{Entries}" as="value">
+	<h1>
+		<script>
+			$(document).ready(function() {
+				$("[date='<f:format.date date='{value.entryDate}' format='d.m.Y' />']").
+				append('<br /><f:link.action action="list" controller="Entry">{value.entryTitle}</f:link.action>');
+			});
+		</script>
+	</h1>
+</f:for>

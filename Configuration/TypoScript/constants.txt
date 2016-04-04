@@ -1,0 +1,15 @@
+
+plugin.tx_kical_fecal {
+	view {
+		# cat=plugin.tx_kical_fecal/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:ki_cal/Resources/Private/Templates/
+		# cat=plugin.tx_kical_fecal/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:ki_cal/Resources/Private/Partials/
+		# cat=plugin.tx_kical_fecal/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:ki_cal/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_kical_fecal//a; type=string; label=Default storage PID
+		storagePid =
+	}
+}

@@ -1,0 +1,224 @@
+<!-- JQUERY -->
+<script src="{f:uri.resource(path:'Scripts/jquery-2.2.2.min.js')}"></script>
+
+<!-- JQUERY UI -->
+<script src="{f:uri.resource(path:'Scripts/jquery-ui-1.11.4/jquery-ui.min.js')}"></script>
+<link href="{f:uri.resource(path:'Scripts/jquery-ui-1.11.4/jquery-ui.min.css')}" type="text/css" rel="stylesheet">
+
+<!-- BOOTSTRAP SOURCE FILES -->
+<link href="{f:uri.resource(path:'Scripts/bootstrap-3.3.6/css/bootstrap.min.css')}" type="text/css" rel="stylesheet">
+<link href="{f:uri.resource(path:'Scripts/bootstrap-3.3.6/css/bootstrap-theme.min.css')}" type="text/css" rel="stylesheet">
+<script src="{f:uri.resource(path:'Scripts/bootstrap-3.3.6/js/bootstrap.min.js')}"></script>
+<script src="{f:uri.resource(path:'Scripts/bootstrap-3.3.6/js/npm.js')}"></script>
+
+<!-- MOMENT.JS -->
+<script src="{f:uri.resource(path:'Scripts/moment.js')}"></script>
+
+<!-- AVGRUND.JS -->
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/avgrund-master/js/avgrund.js"></script>
+<link href="{f:uri.resource(path:'Scripts/avgrund-master/css/avgrund.css')}" type="text/css" rel="stylesheet">
+
+<!-- KI_CAL SOURCE FILES -->
+<link href="{f:uri.resource(path:'CSS/Calendar.css')}" type="text/css" rel="stylesheet">
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/CreateCalendarView.js"></script>
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/NewEntry.js"></script>
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/Search.js"></script>
+
+<!-- Activate datepicker functions -->
+<script>
+	var jsonEntryValues = {jsonEntries};
+	var jsonEventValues = {jsonEvents};
+</script>
+
+<!-- Load calendar entries -->
+
+<!-- Load calendar entries end -->
+
+<!-- Modal for creating new entries -->
+<aside id="new_entry_modal" class="avgrund-popup">
+
+	<div>
+
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Eintrag</a></li>
+			<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Ereignis</a></li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="home">
+
+				<div class="modal_header">
+					<h4>Eintrag hinzufügen</h4>
+				</div>
+
+				<div class="modal_body">
+					<f:form action="create" method="post" enctype="multipart/form-data" controller="Entry" name="newEntry" object="{newEntry}">
+						<f:render partial="Entry/FormFields" arguments="{Entries:Entries}" />
+				</div>
+
+				<div class="modal_footer">
+					<f:form.submit value="Eintrag speichern" class="btn btn-primary" />
+					</f:form>
+					<button class="btn btn-default" onclick="closeDialog();">Schliessen</button>
+				</div>
+
+			</div>
+			<div role="tabpanel" class="tab-pane" id="profile">
+
+				<div class="modal_header">
+					<h4>Ereignis hinzufügen</h4>
+				</div>
+
+				<div class="modal_body">
+					<f:form action="create" method="post" enctype="multipart/form-data" controller="Event" name="newEvent" object="{newEvent}">
+						<f:render partial="Event/FormFields" />
+				</div>
+
+				<div class="modal_footer">
+					<f:form.submit value="Eintrag speichern" class="btn btn-primary" />
+					</f:form>
+					<button class="btn btn-default" onclick="closeDialog();">Schliessen</button>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</aside>
+
+<!-- SEARCH MODAL -->
+<aside id="search_modal" class="avgrund-popup">
+
+	<div>
+
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#entry" aria-controls="entry" role="tab" data-toggle="tab">Eintrag</a></li>
+			<li role="presentation"><a href="#event" aria-controls="event" role="tab" data-toggle="tab">Ereignis</a></li>
+		</ul>
+
+		<!-- Tab wrapper -->
+		<div class="tab-content">
+
+			<!-- Entry tab -->
+			<div role="tabpanel" class="tab-pane active" id="entry">
+				<!-- Modal header -->
+				<div class="modal_header">
+					<h4>Nach Einträgen suchen</h4>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal_body">
+					<f:form action="search" method="post" enctype="multipart/form-data" controller="Entry" name="searchData" object="{searchData}">
+						<f:render partial="Entry/SearchForm" />
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal_footer">
+					<f:form.submit value="Suche ausführen" class="btn btn-primary" />
+					</f:form>
+					<button class="btn btn-default" onclick="closeDialog();">Schliessen</button>
+				</div>
+			</div>
+
+			<!-- Event tab -->
+			<div role="tabpanel" class="tab-pane" id="event">
+
+				<!-- Modal header -->
+				<div class="modal_header">
+					<h4>Nach Ereignissen suchen</h4>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal_body">
+					<f:form action="search" method="post" enctype="multipart/form-data" controller="Event" name="searchData" object="{searchData}">
+						<f:render partial="Event/SearchForm" />
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal_footer">
+					<f:form.submit value="Suche ausführen" class="btn btn-primary" />
+					</f:form>
+					<button class="btn btn-default" onclick="closeDialog();">Schliessen</button>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+</aside>
+
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/EditEntry.js"></script>
+
+<f:flashMessages renderMode="div"/>
+
+<!-- Main part of the calendar -->
+<section id="main_calendar">
+
+	<!-- HEADER -->
+	<header>
+		<nav id="month_nav">
+			<ul class="pager">
+				<li id="month_minus">
+					<a href="#" class="glyphicon glyphicon-arrow-left"></a>
+				</li>
+				<li id="month_plus">
+					<a href="#" class="glyphicon glyphicon-arrow-right"></a>
+				</li>
+			</ul>
+
+			<f:form.button id="switch_to_today_btn" type="button" class="btn btn-default">Heute</f:form.button>
+			<script>
+				$("#switch_to_today_btn").prop("title", moment().locale("de").format("dddd, Do MMMM YYYY"));
+			</script>
+
+			<p id="current_date_indicator">
+				<script>
+					$("#current_date_indicator").html(moment().locale("de").format("dddd, Do MMMM YYYY"));
+				</script>
+			</p>
+		</nav>
+
+		<div id="current_month">
+			<h1>
+				<script>$("#current_month > h1").html(moment().locale("de").format("MMMM") + " " + moment().format("YYYY"));</script></h1>
+		</div>
+
+		<div id="user_actions">
+			<button id="new_entry_btn">
+				<img src="typo3conf/ext/ki_cal/Resources/Public/Icons/add_entry.png" width="20m" height="20m" />
+			</button>
+			<button id="search_btn">
+				<img src="typo3conf/ext/ki_cal/Resources/Public/Icons/search.png" width="20m" height="20m" />
+			</button>
+		</div>
+
+	</header>
+	<!-- HEADER END -->
+
+	<!-- LEFT NAVIGATION -->
+	<section id="calendar_second_nav">
+
+		<nav id="calendar_week_nav">
+			<h3>Kalenderwoche</h3>
+			<ul></ul>
+		</nav>
+
+		<nav id="calendar_date_nav">
+			<h3>Monat / Jahr</h3>
+			<f:form.select name="month_selector" class="form-control" options="{1: 'Januar', 2: 'Februar', 3: 'März', 4: 'April', 5: 'Mai', 6: 'Juni', 7: 'Juli',
+        8: 'August', 9: 'September', 10: 'Oktober', 11: 'November', 12: 'Dezember'}" />
+			<f:form.textfield class="form-control" property="year" placeholder="Jahr" name="year_input_field" />
+		</nav>
+
+	</section>
+	<!-- LEFT NAVIGATION END -->
+
+	<!-- Container for the calendar fields -->
+	<section id="calendar_fields">
+	</section>
+
+</section>

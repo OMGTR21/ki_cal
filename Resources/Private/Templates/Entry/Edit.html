@@ -1,0 +1,33 @@
+<!-- EDIT ENTRY MODAL -->
+<!-- Wrapper -->
+<div>
+
+	<!-- Header of modal -->
+	<div class="modal_header">
+		<h4>Detaillierte Informationen</h4>
+	</div>
+
+	<!-- Body of modal -->
+	<div class="modal_body">
+		<f:form action="update" method="post" enctype="multipart/form-data" controller="Entry" name="entry" object="{detailedEntry}">
+
+			<!-- Get input fields -->
+			<f:render partial="Entry/EditEntry" arguments="{detailedEntry : detailedEntry}" />
+	</div>
+
+	<!-- Footer of modal -->
+	<div class="modal_footer">
+
+		<!-- submit button -->
+		<f:form.submit value="Eintrag speichern" class="btn btn-primary" />
+
+		<f:link.action class="btn btn-danger" action='delete' controller='Entry' arguments="{entry:detailedEntry.uid}">Eintrag löschen</f:link.action>
+
+		<f:link.action action="show" controller="Calendar" class="btn btn-default">Zurück zum Kalender</f:link.action>
+
+		</f:form>
+
+	</div>
+
+</div>
+<!-- EDIT ENTRY MODAL END -->

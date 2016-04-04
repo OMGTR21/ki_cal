@@ -1,0 +1,45 @@
+
+plugin.tx_kical_fecal {
+	view {
+		templateRootPath = {$plugin.tx_kical_fecal.view.templateRootPath}
+		partialRootPath = {$plugin.tx_kical_fecal.view.partialRootPath}
+		layoutRootPath = {$plugin.tx_kical_fecal.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_kical_fecal.persistence.storagePid}
+	}
+}
+
+plugin.tx_kical._CSS_DEFAULT_STYLE (
+	textarea.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+
+	input.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+
+	.tx-ki-cal table {
+		border-collapse:separate;
+		border-spacing:10px;
+	}
+
+	.tx-ki-cal table th {
+		font-weight:bold;
+	}
+
+	.tx-ki-cal table td {
+		vertical-align:top;
+	}
+
+	.typo3-messages .message-error {
+		color:red;
+	}
+
+	.typo3-messages .message-ok {
+		color:green;
+	}
+
+)
