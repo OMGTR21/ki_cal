@@ -76,3 +76,7 @@
   <br />
   <f:form.upload property="image" name="image" value='<a href="{detailedEntry.description}"></a>'/>
   <br />
+
+  <script>
+    $(".datepickerInputField").val(moment($(".datepickerInputField").val()).format("DD.MM.YYYY"));
+  </script>

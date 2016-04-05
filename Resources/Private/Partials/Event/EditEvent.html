@@ -32,3 +32,7 @@
 <f:form.textfield property="eventDate" class="form-control datepickerInputField" value='{detailedEntry.eventDate}'/>
 <br />
 <f:form.hidden name='uid' value="{detailedEntry.uid}" />
+
+<script>
+  $(".datepickerInputField").val(moment($(".datepickerInputField").val()).format("DD.MM.YYYY"));
+</script>

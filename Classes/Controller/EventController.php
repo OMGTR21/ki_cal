@@ -40,42 +40,6 @@ class EventController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	protected $eventRepository = NULL;
 
 	/**
-	* Persistence Manager
-	*
-	*@var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-	*@inject
-	*/
-	protected $persistenceManager;
-
-	/**
-	 * action list
-	 *
-	 * @param \Ki\KiCal\Domain\Model\Event $event
-	 * @return void
-	 */
-	public function listAction(\Ki\KiCal\Domain\Model\Event $event) {
-
-	}
-
-	/**
-	 * action show
-	 *
-	 * @return void
-	 */
-	public function showAction() {
-
-	}
-
-	/**
-	 * action new
-	 *
-	 * @return void
-	 */
-	public function newAction() {
-
-	}
-
-	/**
 	 * action create
 	 *
 	 * @param \Ki\KiCal\Domain\Model\Event $newEvent
@@ -90,13 +54,16 @@ class EventController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		$this->eventRepository->add($newEvent);
 
 		// Get back to the calendar
-		$this->redirect('show');
+		$this->redirect('list', 'Calendar');
+
+		exit;
 	}
 
 	/**
 	 * action edit
 	 *
 	 * @param \Ki\KiCal\Domain\Model\Event $event
+	 * @ignorevalidation $event
 	 * @return void
 	 */
 	public function editAction(\Ki\KiCal\Domain\Model\Event $event) {

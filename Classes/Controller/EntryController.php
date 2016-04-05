@@ -40,36 +40,6 @@ class EntryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	protected $entryRepository = NULL;
 
 	/**
-	 * action list
-	 *
-	 * @return void
-	 */
-	public function listAction() {
-		echo "list";
-		exit;
-	}
-
-	/**
-	 * action show
-	 *
-	 * @return void
-	 */
-	public function showAction() {
-		echo "show";
-		exit;
-	}
-
-	/**
-	 * action new
-	 *
-	 * @return void
-	 */
-	public function newAction() {
-		echo "new";
-		exit;
-	}
-
-	/**
 	 * action create entry
 	 *
 	 * @param \Ki\KiCal\Domain\Model\Entry $newEntry
@@ -94,12 +64,14 @@ class EntryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 			// Get back to the calendar
 			$this->redirect('list', 'Calendar');
+			exit;
 		}else {
 			$this->flashMessageContainer->add('<div class="alert alert-warning alert-dismissible" role="alert">
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<strong>Warnung!</strong> Sie besitzen keine Rechte zum Ausführen dieser Aktion.
 			</div>', "", \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 			$this->redirect('list', 'Calendar');
+			exit;
 		}
 	}
 
@@ -146,6 +118,7 @@ class EntryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	public function searchAction(\Ki\KiCal\Domain\Model\Entry $searchData) {
 		$result = $this->entryRepository->getEntry($searchData);
 		$this->view->assign('queryResult', $result);
+		exit;
 	}
 
 }

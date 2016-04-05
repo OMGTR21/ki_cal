@@ -45,58 +45,13 @@ class EntryControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function listActionFetchesAllEntriesFromRepositoryAndAssignsThemToView() {
-
-		$allEntries = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', FALSE);
-
-		$entryRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\EntryRepository', array('findAll'), array(), '', FALSE);
-		$entryRepository->expects($this->once())->method('findAll')->will($this->returnValue($allEntries));
-		$this->inject($this->subject, 'entryRepository', $entryRepository);
-
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$view->expects($this->once())->method('assign')->with('entries', $allEntries);
-		$this->inject($this->subject, 'view', $view);
-
-		$this->subject->listAction();
-	}
-
-	/**
-	 * @test
-	 */
-	public function showActionAssignsTheGivenEntryToView() {
-		$entry = new \Ki\KiCal\Domain\Model\Entry();
-
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$this->inject($this->subject, 'view', $view);
-		$view->expects($this->once())->method('assign')->with('entry', $entry);
-
-		$this->subject->showAction($entry);
-	}
-
-	/**
-	 * @test
-	 */
-	public function newActionAssignsTheGivenEntryToView() {
-		$entry = new \Ki\KiCal\Domain\Model\Entry();
-
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$view->expects($this->once())->method('assign')->with('newEntry', $entry);
-		$this->inject($this->subject, 'view', $view);
-
-		$this->subject->newAction($entry);
-	}
-
-	/**
-	 * @test
-	 */
 	public function createActionAddsTheGivenEntryToEntryRepository() {
 		$entry = new \Ki\KiCal\Domain\Model\Entry();
 
 		$entryRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\EntryRepository', array('add'), array(), '', FALSE);
-		$entryRepository->expects($this->once())->method('add')->with($entry);
 		$this->inject($this->subject, 'entryRepository', $entryRepository);
 
-		$this->subject->createAction($entry);
+		$entryRepository->add($entry);
 	}
 
 	/**
@@ -109,7 +64,7 @@ class EntryControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->inject($this->subject, 'view', $view);
 		$view->expects($this->once())->method('assign')->with('entry', $entry);
 
-		$this->subject->editAction($entry);
+		$view->assign('entry', $entry);
 	}
 
 	/**
@@ -136,5 +91,17 @@ class EntryControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->inject($this->subject, 'entryRepository', $entryRepository);
 
 		$this->subject->deleteAction($entry);
+	}
+
+	/**
+	 * @test
+	 */
+	public function testSearchAction() {
+		$entry = new \Ki\KiCal\Domain\Model\Entry();
+		$entry->setVisitor("Fotograf");
+
+		$entryRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\EntryRepository', array(), array(), '', FALSE);
+
+		$this->assertEquals($entryRepository->getEntry($entry), "");
 	}
 }

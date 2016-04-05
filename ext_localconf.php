@@ -9,8 +9,8 @@ if (!defined('TYPO3_MODE')) {
 	'Fecal',
 	array(
 		'Calendar' => 'show, list, new, create, edit, update, delete, changeMonth',
-		'Event' => 'edit, list, delete, show, update, new, create, search',
-		'Entry' => 'edit, list, delete, update, show, new, create, search',
+		'Event' => 'edit, update, create, search, delete',
+		'Entry' => 'edit, update, create, search, delete',
 		'CalendarSearch' => 'list, show',
 		'ShowPublic' => 'list, show'
 	),

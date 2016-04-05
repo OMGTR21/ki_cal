@@ -173,8 +173,6 @@ function generateCurrentMonthFields(current_month, current_year) {
 
       // When it is the first call of the page, then remove "amp;" from the action link
       if (first_call === true) {
-        first_call = false;
-
         // Remove amp;
         for (var j = 0; j < 2; j++) {
           action_link_temp = action_link_temp.replace("&amp;", "&");
@@ -186,6 +184,7 @@ function generateCurrentMonthFields(current_month, current_year) {
       $("[name='" + jsonEventValues[i].eventTitle + "']").attr("href", action_link_temp);
     }
   }
+  first_call = false;
 }
 
 /*
