@@ -86,16 +86,20 @@ class CalendarController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 
 		foreach($calEntries as $entry) {
 
-			var_dump($entry);
 			$actionLinkEntry = $this->generateActionLink("Entry", "edit", $entry, "entry");
 
-			$jsonEntries = $jsonEntries . "{'entryTitle':'" . $entry->getEntryTitle() . "',";
-			$jsonEntries = $jsonEntries . "'actionLink':'" . $actionLinkEntry . "',";
-			$jsonEntries = $jsonEntries . "'visitor':'" . $entry->getVisitor() . "',";
-			$jsonEntries = $jsonEntries . "'entryDate':'" . $entry->getEntryDate() . "'},";
+			if($entry->getEntryTitle == "") {
+				$jsonEntries = $jsonEntries . "{'entryTitle':'" . $entry->getVisitor() . "',";
+				$jsonEntries = $jsonEntries . "'actionLink':'" . $actionLinkEntry . "',";
+				$jsonEntries = $jsonEntries . "'visitor':'" . $entry->getVisitor() . "',";
+				$jsonEntries = $jsonEntries . "'entryDate':'" . $entry->getEntryDate() . "'},";
+			}else {
+				$jsonEntries = $jsonEntries . "{'entryTitle':'" . $entry->getEntryTitle() . "',";
+				$jsonEntries = $jsonEntries . "'actionLink':'" . $actionLinkEntry . "',";
+				$jsonEntries = $jsonEntries . "'visitor':'" . $entry->getVisitor() . "',";
+				$jsonEntries = $jsonEntries . "'entryDate':'" . $entry->getEntryDate() . "'},";
+			}
 		}
-
-		exit;
 
 		$jsonEntries = substr($jsonEntries, 0, -1);
 		$jsonEntries .= ']';
@@ -108,10 +112,15 @@ class CalendarController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$jsonEvents = $jsonEvents . "{'eventTitle':'" . $event->getEventTitle() . "',";
 			$jsonEvents = $jsonEvents .  "'actionLink':'" . $actionLinkEvent . "',";
 			$jsonEvents = $jsonEvents .  "'eventDate':'" . $event->getEventDate() . "'},";
+
+
 		}
 
 		$jsonEvents = substr($jsonEvents, 0, -1);
 		$jsonEvents .= ']';
+
+		// echo $jsonEvents;
+		// exit;
 
 		// In case of no entries where found
 		if($jsonEvents == "]") {

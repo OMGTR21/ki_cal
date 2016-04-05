@@ -147,25 +147,44 @@ function generateCurrentMonthFields(current_month, current_year) {
       }
     }
 
-    $("[date='" + date + "']").append('<br /><a href="" name="' + jsonEntryValues[i].entryTitle + '">' + jsonEntryValues[i].visitor + '</a>');
-    $("[name='" + jsonEntryValues[i].entryTitle + "']").attr("href", jsonEntryValues[i].actionLink);
-  }
-
-  for (var i = 0; i < jsonEventValues.length; i++) {
-    var date = jsonEventValues[i].eventDate;
-    date = moment(date).format('DD.MM.YYYY');
-
-    if (first_call === true) {
-      first_call = false;
-
-      // Remove amp;
-      for (var j = 0; j < 2; j++) {
-        jsonEventValues[i].actionLink = jsonEventValues[i].actionLink.replace("&amp;", "&");
-      }
+    // Check if entry has a visitor or an entry title
+    if (jsonEntryValues[i].entryTitle == "") {
+      $("[date='" + date + "']").append('<br /><a href="" name="' + jsonEntryValues[i].visitor + '">' + jsonEntryValues[i].visitor + '</a>');
+      $("[name='" + jsonEntryValues[i].visitor + "']").attr("href", jsonEntryValues[i].actionLink);
     }
 
-    $("[date='" + date + "']").append('<br /><a href="" name="' + jsonEventValues[i].eventTitle + '">' + jsonEventValues[i].eventTitle + '</a>');
-    $("[name='" + jsonEventValues[i].eventTitle + "']").attr("href", jsonEventValues[i].actionLink);
+    if (jsonEntryValues[i].entryTitle !== "") {
+      $("[date='" + date + "']").append('<br /><a href="" name="' + jsonEntryValues[i].entryTitle + '">' + jsonEntryValues[i].entryTitle + '</a>');
+      $("[name='" + jsonEntryValues[i].entryTitle + "']").attr("href", jsonEntryValues[i].actionLink);
+    }
+  }
+
+  // Write events in the calendar fields
+  for (var i = 0; i < jsonEventValues.length; i++) {
+
+    // Check if the event is in the current month
+    if (moment(jsonEventValues[i].eventDate).format("M") == getCurrentMonth() && moment(jsonEventValues[i].eventDate).format("YYYY") == getCurrentYear()) {
+
+      // Format the date for the calendar fields
+      var date = moment(jsonEventValues[i].eventDate).format('DD.MM.YYYY')
+
+      // Save the action link of the current event to edit it later
+      var action_link_temp = jsonEventValues[i].actionLink;
+
+      // When it is the first call of the page, then remove "amp;" from the action link
+      if (first_call === true) {
+        first_call = false;
+
+        // Remove amp;
+        for (var j = 0; j < 2; j++) {
+          action_link_temp = action_link_temp.replace("&amp;", "&");
+        }
+      }
+
+      // Create the content of the calendar fields
+      $("[date='" + date + "']").append('<br /><a href="" name="' + jsonEventValues[i].eventTitle + '">' + jsonEventValues[i].eventTitle + '</a>');
+      $("[name='" + jsonEventValues[i].eventTitle + "']").attr("href", action_link_temp);
+    }
   }
 }
 
