@@ -8,6 +8,9 @@ plugin.tx_kical_fecal {
 	persistence {
 		storagePid = {$plugin.tx_kical_fecal.persistence.storagePid}
 	}
+	features {
+		rewrittenPropertyMapper = 1
+	}
 }
 
 plugin.tx_kical._CSS_DEFAULT_STYLE (

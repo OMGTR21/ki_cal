@@ -23,14 +23,24 @@
 <script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/CreateCalendarView.js"></script>
 <script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/NewEntry.js"></script>
 
+<!-- print all found entries  -->
 <h2>Gefundene Ereignisse:</h2><br />
 <f:for each="{queryResult}" as="result">
   <ul class="searchResult">
     <li><h4>{result.eventTitle}</h4></li>
-    <li>Datum: {result.eventDate}</li>
+    <li>Datum: <span class="date">{result.eventDate}</span></li>
   </ul>
   <hr>
   <br />
 </f:for>
 
 <f:link.action action="show" controller="Calendar" class="btn btn-default">Zurück zum Kalender</f:link.action>
+
+<!-- adjust date format -->
+<script>
+  var date_fields = $('.date');
+
+  for (var i = 0; i < date_fields.length; i++) {
+    date_fields[i].innerHTML = moment(date_fields[i].innerHTML).format('DD.MM.YYYY');
+  }
+</script>

@@ -3,7 +3,7 @@ namespace Ki\KiCal\Tests\Unit\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 
+ *  (c) 2016
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -45,50 +45,6 @@ class EventControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function listActionFetchesAllEventsFromRepositoryAndAssignsThemToView() {
-
-		$allEvents = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', FALSE);
-
-		$eventRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\EventRepository', array('findAll'), array(), '', FALSE);
-		$eventRepository->expects($this->once())->method('findAll')->will($this->returnValue($allEvents));
-		$this->inject($this->subject, 'eventRepository', $eventRepository);
-
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$view->expects($this->once())->method('assign')->with('events', $allEvents);
-		$this->inject($this->subject, 'view', $view);
-
-		$this->subject->listAction();
-	}
-
-	/**
-	 * @test
-	 */
-	public function showActionAssignsTheGivenEventToView() {
-		$event = new \Ki\KiCal\Domain\Model\Event();
-
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$this->inject($this->subject, 'view', $view);
-		$view->expects($this->once())->method('assign')->with('event', $event);
-
-		$this->subject->showAction($event);
-	}
-
-	/**
-	 * @test
-	 */
-	public function newActionAssignsTheGivenEventToView() {
-		$event = new \Ki\KiCal\Domain\Model\Event();
-
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$view->expects($this->once())->method('assign')->with('newEvent', $event);
-		$this->inject($this->subject, 'view', $view);
-
-		$this->subject->newAction($event);
-	}
-
-	/**
-	 * @test
-	 */
 	public function createActionAddsTheGivenEventToEventRepository() {
 		$event = new \Ki\KiCal\Domain\Model\Event();
 
@@ -106,8 +62,10 @@ class EventControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$event = new \Ki\KiCal\Domain\Model\Event();
 
 		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
+		$eventRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\EventRepository', array(), array(), '', FALSE);
 		$this->inject($this->subject, 'view', $view);
-		$view->expects($this->once())->method('assign')->with('event', $event);
+		$this->inject($this->subject, 'eventRepository', $eventRepository);
+		$view->expects($this->once())->method('assign')->with('detailedEntry', $eventRepository->findByUid($event->getUid()));
 
 		$this->subject->editAction($event);
 	}
@@ -136,5 +94,22 @@ class EventControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->inject($this->subject, 'eventRepository', $eventRepository);
 
 		$this->subject->deleteAction($event);
+	}
+
+	/**
+	 * @test
+	 */
+	public function testSearchAction() {
+		$event = new \Ki\KiCal\Domain\Model\Event();
+		$event->setEventTitle("Test");
+
+		$object = $this->getMock('Event', array('getEvent'));
+		$eventRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\EventRepository', array('add', 'getEvent'), array(), '', FALSE);
+		$eventRepository->add($entry);
+		$object->method('getEvent')
+			->with($event)
+			->will($this->returnValue($result));
+
+		$this->assertNotNull($object);
 	}
 }

@@ -99,6 +99,10 @@ function generateHTML($all_public_entries) {
 		// There needs to be at least one company / visitor
 		if($entry["company"] !== "" || $entry["visitor"] !== "") {
 
+			if(strcmp($entry['image'], '') !== 0) {
+				echo '<img width="150px" height="150px" style="float:left; margin-right: 10px; margin-top: 10px" src="' . $entry['image'] . '"/>';
+			}
+
 			// Check if the entry has a visitor but no company
 			if($entry["company"] == "" && $entry["visitor"] !== "") {
 					echo "<p id='company'>" . $entry["visitor"] . "</p><br />";

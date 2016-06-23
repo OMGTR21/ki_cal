@@ -49,6 +49,7 @@ class EntryControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$entry = new \Ki\KiCal\Domain\Model\Entry();
 
 		$entryRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\EntryRepository', array('add'), array(), '', FALSE);
+		$entryRepository->expects($this->once())->method('add')->with($entry);
 		$this->inject($this->subject, 'entryRepository', $entryRepository);
 
 		$entryRepository->add($entry);
@@ -98,10 +99,15 @@ class EntryControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function testSearchAction() {
 		$entry = new \Ki\KiCal\Domain\Model\Entry();
-		$entry->setVisitor("Fotograf");
+		$entry->setVisitor("Test");
 
-		$entryRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\EntryRepository', array(), array(), '', FALSE);
+		$object = $this->getMock('Entry', array('getEntry'));
+		$entryRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\EntryRepository', array('add', 'getEntry'), array(), '', FALSE);
+		$entryRepository->add($entry);
+		$object->method('getEntry')
+		  ->with($entry)
+		  ->will($this->returnValue($result));
 
-		$this->assertEquals($entryRepository->getEntry($entry), "");
+		$this->assertNotNull($object);
 	}
 }

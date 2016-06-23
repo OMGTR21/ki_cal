@@ -1,8 +1,26 @@
 <label for="eventTitle">Titel</label>
 <br />
-<f:form.textfield property="eventTitle" class="form-control" />
+<f:form.textfield property="eventTitle" required="1" class="form-control toValidate" placeholder="Titel"/>
 <br />
 <label for="eventDate">Datum</label>
 <br />
-<f:form.textfield property="eventDate" class="form-control datepickerInputField" />
+<f:form.textfield property="eventDate" required="1" class="form-control datepickerInputField datepicker toValidate" placeholder="DD.MM.YYYY"/>
 <br />
+
+  <script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/ValidateInputValues.js"></script>
+
+<script>
+  $.datepicker.setDefaults( $.datepicker.regional[ "de" ] );
+	$('.datepicker').datepicker({
+		dateFormat: 'dd.mm.yy'
+	});
+
+  $('.toValidate').keypress(function() {
+
+    validateEntryValues($(this), 'new_event');
+  });
+
+  $('.toValidate').keyup(function() {
+    validateEntryValues($(this), 'edit_entry');
+  });
+</script>

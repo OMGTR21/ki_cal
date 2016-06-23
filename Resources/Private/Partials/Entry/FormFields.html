@@ -1,36 +1,40 @@
+
+
+<!-- Input fields for a new entry -->
+
 <label for="entryTitle">Titel</label>
 <br />
-<f:form.textfield property="entryTitle" class="form-control" />
+<f:form.textfield property="entryTitle" required="1" class="form-control toValidate" placeholder="Titel"  />
 <br />
 <label for="description">Beschreibung</label>
 <br />
-<f:form.textfield property="description" class="form-control" />
+<f:form.textfield property="description" class="form-control toValidate" placeholder="Beschreibung"/>
 <br />
 <label for="entryDate">Datum</label>
 <br />
-<f:form.textfield property="entryDate" class="form-control datepickerInputField" />
+<f:form.textfield property="entryDate" class="form-control datepickerInputField datepicker toValidate" required="1" placeholder="DD.MM.YYYY"/>
 <br />
 <label for="startTime">Start-Zeit</label>
 <br />
-<f:form.textfield property="startTime" class="form-control" />
+<f:form.textfield property="startTime" class="form-control toValidate" placeholder="00:00" />
 <br />
 <label for="entryDate">End-Zeit</label>
 <br />
-<f:form.textfield property="endTime" class="form-control" />
+<f:form.textfield property="endTime" class="form-control toValidate"  placeholder="00:00"/>
 <br />
 <div style="border-bottom: 1px solid #EBEBEB"></div>
 <br />
 <label for="entryDate">Besucher</label>
 <br />
-<f:form.textfield property="visitor" class="form-control" />
+<f:form.textfield property="visitor" class="form-control toValidate" placeholder="Besucher" />
 <br />
 <label for="entryDate">Firma</label>
 <br />
-<f:form.textfield property="company" class="form-control" />
+<f:form.textfield property="company" class="form-control toValidate" placeholder="Firma" />
 <br />
 <label for="entryDate">Kontakt</label>
 <br />
-<f:form.textfield property="contact" class="form-control" />
+<f:form.textfield property="contact" class="form-control toValidate" placeholder="Kontakt" />
 <br />
 <div style="border-bottom: 1px solid #EBEBEB"></div>
 <br />
@@ -40,5 +44,23 @@
 <br />
 <label for="entryDate">Bild anhängen</label>
 <br />
-<f:form.upload property="image" name="image" />
+<f:form.upload name="image" />
 <br />
+
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/ValidateInputValues.js"></script>
+
+<script>
+  $.datepicker.setDefaults( $.datepicker.regional[ "de" ] );
+	$('.datepicker').datepicker({
+		dateFormat: 'dd.mm.yy'
+	});
+
+  $('.toValidate').keypress(function() {
+
+    validateEntryValues($(this), 'new_entry');
+  });
+
+  $('.toValidate').keyup(function() {
+    validateEntryValues($(this), 'edit_entry');
+  });
+</script>

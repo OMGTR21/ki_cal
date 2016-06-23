@@ -5,7 +5,7 @@ namespace Ki\KiCal\Tests\Unit\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 
+ *  (c) 2016
  *
  *  All rights reserved
  *
@@ -50,7 +50,47 @@ class EventTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function dummyTestToNotLeaveThisFileEmpty() {
-		$this->markTestIncomplete();
+	public function getEventTitleReturnsInitialValueForString() {
+		$this->assertSame(
+			'',
+			$this->subject->getEventTitle()
+		);
 	}
+
+	/**
+	 * @test
+	 */
+	public function setEventTitleForStringSetsTitle() {
+		$this->subject->setEventTitle('Conceived at T3CON10');
+
+		$this->assertAttributeEquals(
+			'Conceived at T3CON10',
+			'eventTitle',
+			$this->subject
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getEventDateReturnsInitialValueForString() {
+		$this->assertSame(
+			'',
+			$this->subject->getEventDate()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setEventDateForStringSetsTitle() {
+		$this->subject->setEventDate('Conceived at T3CON10');
+
+		$this->assertAttributeEquals(
+			'Conceived at T3CON10',
+			'eventDate',
+			$this->subject
+		);
+	}
+
 }
