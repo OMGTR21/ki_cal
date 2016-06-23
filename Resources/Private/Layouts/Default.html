@@ -4,6 +4,7 @@
 <!-- JQUERY UI -->
 <script src="{f:uri.resource(path:'Scripts/jquery-ui-1.11.4/jquery-ui.min.js')}"></script>
 <link href="{f:uri.resource(path:'Scripts/jquery-ui-1.11.4/jquery-ui.min.css')}" type="text/css" rel="stylesheet">
+<script src="{f:uri.resource(path:'Scripts/jquery-ui-1.11.4/ui.datepicker-.js')}"></script>
 
 <!-- BOOTSTRAP SOURCE FILES -->
 <link href="{f:uri.resource(path:'Scripts/bootstrap-3.3.6/css/bootstrap.min.css')}" type="text/css" rel="stylesheet">
@@ -24,11 +25,14 @@
 <script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/NewEntry.js"></script>
 <script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/Search.js"></script>
 
+
 <!-- Activate datepicker functions -->
 <script>
 	var jsonEntryValues = {jsonEntries};
 	var jsonEventValues = {jsonEvents};
 </script>
+
+
 
 <!-- Load calendar entries -->
 
@@ -54,7 +58,7 @@
 				</div>
 
 				<div class="modal_body">
-					<f:form action="create" method="post" enctype="multipart/form-data" controller="Entry" name="newEntry" object="{newEntry}">
+					<f:form action="create" method="post" enctype="multipart/form-data" controller="Entry" name="new_entry_data" object="{new_entry_data}">
 						<f:render partial="Entry/FormFields" arguments="{Entries:Entries}" />
 				</div>
 
@@ -163,10 +167,10 @@
 		<nav id="month_nav">
 			<ul class="pager">
 				<li id="month_minus">
-					<a href="#" class="glyphicon glyphicon-arrow-left"></a>
+					<a href="#" class="glyphicon glyphicon-arrow-left" title="Einen Monat zurück"></a>
 				</li>
 				<li id="month_plus">
-					<a href="#" class="glyphicon glyphicon-arrow-right"></a>
+					<a href="#" class="glyphicon glyphicon-arrow-right" title="Einen Monat vor"></a>
 				</li>
 			</ul>
 
@@ -188,10 +192,10 @@
 		</div>
 
 		<div id="user_actions">
-			<button id="new_entry_btn">
+			<button id="new_entry_btn" title="Einen neuen Eintrag erstellen.">
 				<img src="typo3conf/ext/ki_cal/Resources/Public/Icons/add_entry.png" width="20m" height="20m" />
 			</button>
-			<button id="search_btn">
+			<button id="search_btn" title="Die Einträge durchsuchen.">
 				<img src="typo3conf/ext/ki_cal/Resources/Public/Icons/search.png" width="20m" height="20m" />
 			</button>
 		</div>

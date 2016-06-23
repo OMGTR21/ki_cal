@@ -1,3 +1,5 @@
+<!-- Input fields for the edit form -->
+
 <!-- JQUERY -->
 <script src="{f:uri.resource(path:'Scripts/jquery-2.2.2.min.js')}"></script>
 
@@ -25,14 +27,32 @@
 
 <label for="eventTitle">Titel</label>
 <br />
-<f:form.textfield property="eventTitle" class="form-control" value='{detailedEntry.eventTitle}'/>
+<f:form.textfield property="eventTitle" class="form-control toValidate" value='{detailedEntry.eventTitle}'/>
 <br />
 <label for="eventDate">Datum</label>
 <br />
-<f:form.textfield property="eventDate" class="form-control datepickerInputField" value='{detailedEntry.eventDate}'/>
+<f:form.textfield property="eventDate" class="form-control datepickerInputField datepicker toValidate" value='{detailedEntry.eventDate}'/>
 <br />
 <f:form.hidden name='uid' value="{detailedEntry.uid}" />
 
 <script>
   $(".datepickerInputField").val(moment($(".datepickerInputField").val()).format("DD.MM.YYYY"));
+</script>
+
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/ValidateInputValues.js"></script>
+
+<script>
+  $.datepicker.setDefaults( $.datepicker.regional[ "de" ] );
+	$('.datepicker').datepicker({
+		dateFormat: 'dd.mm.yy'
+	});
+
+  $('.toValidate').keypress(function() {
+
+    validateEntryValues($(this), 'edit_event');
+  });
+
+  $('.toValidate').keyup(function() {
+    validateEntryValues($(this), 'edit_entry');
+  });
 </script>

@@ -36,68 +36,68 @@ class Entry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @var string
 	 */
-	protected $entryTitle;
+	protected $entryTitle = "";
 
 	/**
 	 * description
 	 *
 	 * @var string
 	 */
-	protected $description;
+	protected $description = "";
 
 	/**
 	 * entryDate
 	 *
 	 * @var string
 	 */
-	protected $entryDate;
+	protected $entryDate = "";
 
 	/**
 	 * startTime
 	 *
 	 * @var string
 	 */
-	protected $startTime;
+	protected $startTime = "";
 
 	/**
 	 * endTime
 	 *
 	 * @var string
 	 */
-	protected $endTime;
+	protected $endTime = "";
 
 	/**
 	 * visitor
 	 *
 	 * @var string
 	 */
-	protected $visitor;
+	protected $visitor = "";
 
 	/**
 	 * company
 	 *
 	 * @var string
 	 */
-	protected $company;
+	protected $company = "";
 
 	/**
 	 * contact
 	 *
 	 * @var string
 	 */
-	protected $contact;
+	protected $contact = "";
 
 	/**
 	 * public
 	 *
 	 * @var string
 	 */
-	protected $public;
+	protected $public = "";
 
 	/**
 	 * image
-	 *
-	 * @var array
+	 * @var string $image
+	 * @ignorevalidation $image
 	 */
 	protected $image;
 
@@ -273,20 +273,20 @@ class Entry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	* Returns the file name
+	* Returns the image
 	*
-	* @return array $image
+	* @return string $image
 	*/
 	public function getImage() {
 	  return $this->image;
 	}
 
 	/**
-	* Sets the file name
-	*
-	* @param array $image
-	* @return void
-	*/
+ * Sets the image
+ *
+ * @param string $image
+ * @return void
+ */
 	public function setImage($image) {
 	  $this->image = $image;
 	}

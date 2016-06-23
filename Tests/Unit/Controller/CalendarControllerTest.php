@@ -3,7 +3,7 @@ namespace Ki\KiCal\Tests\Unit\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 
+ *  (c) 2016
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -45,16 +45,19 @@ class CalendarControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function listActionFetchesAllCalendarsFromRepositoryAndAssignsThemToView() {
+	public function listActionRedirectsToShowAction() {
 
-		$allCalendars = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', FALSE);
+		$eventRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\EventRepository', array('findAll'), array(), '', FALSE);
+		$entryRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\EntryRepository', array('findAll'), array(), '', FALSE);
+		$calEntries = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', FALSE);
+		$calEvents = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', FALSE);
 
-		$calendarRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\CalendarRepository', array('findAll'), array(), '', FALSE);
-		$calendarRepository->expects($this->once())->method('findAll')->will($this->returnValue($allCalendars));
-		$this->inject($this->subject, 'calendarRepository', $calendarRepository);
+		$eventRepository->expects($this->once())->method('findAll')->will($this->returnValue($calEvents));
+		$entryRepository->expects($this->once())->method('findAll')->will($this->returnValue($calEntries));
+		$this->inject($this->subject, 'eventRepository', $eventRepository);
+		$this->inject($this->subject, 'entryRepository', $entryRepository);
 
 		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$view->expects($this->once())->method('assign')->with('calendars', $allCalendars);
 		$this->inject($this->subject, 'view', $view);
 
 		$this->subject->listAction();
@@ -65,76 +68,29 @@ class CalendarControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function showActionAssignsTheGivenCalendarToView() {
 		$calendar = new \Ki\KiCal\Domain\Model\Calendar();
-
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$this->inject($this->subject, 'view', $view);
-		$view->expects($this->once())->method('assign')->with('calendar', $calendar);
-
 		$this->subject->showAction($calendar);
 	}
 
 	/**
-	 * @test
-	 */
-	public function newActionAssignsTheGivenCalendarToView() {
-		$calendar = new \Ki\KiCal\Domain\Model\Calendar();
+	* @test
+	*/
+	public function generateActionLinkTest() {
+		$entry = new \Ki\KiCal\Domain\Model\Entry();
+		$cacheHash = new \TYPO3\CMS\Frontend\Page\CacheHashCalculator();
 
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$view->expects($this->once())->method('assign')->with('newCalendar', $calendar);
-		$this->inject($this->subject, 'view', $view);
+		$this->inject($this->subject, 'cacheHash', $cacheHash);
 
-		$this->subject->newAction($calendar);
+		$this->assertInternalType('string', \Ki\KiCal\Controller\CalendarController::generateActionLink("Entry", "edit", $entry, "entry"));
 	}
 
 	/**
-	 * @test
-	 */
-	public function createActionAddsTheGivenCalendarToCalendarRepository() {
-		$calendar = new \Ki\KiCal\Domain\Model\Calendar();
+	* @test
+	*/
+	public function checkPermissionsTest() {
+		$calendar = new \Ki\KiCal\Controller\CalendarController();
 
-		$calendarRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\CalendarRepository', array('add'), array(), '', FALSE);
-		$calendarRepository->expects($this->once())->method('add')->with($calendar);
-		$this->inject($this->subject, 'calendarRepository', $calendarRepository);
-
-		$this->subject->createAction($calendar);
-	}
-
-	/**
-	 * @test
-	 */
-	public function editActionAssignsTheGivenCalendarToView() {
-		$calendar = new \Ki\KiCal\Domain\Model\Calendar();
-
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$this->inject($this->subject, 'view', $view);
-		$view->expects($this->once())->method('assign')->with('calendar', $calendar);
-
-		$this->subject->editAction($calendar);
-	}
-
-	/**
-	 * @test
-	 */
-	public function updateActionUpdatesTheGivenCalendarInCalendarRepository() {
-		$calendar = new \Ki\KiCal\Domain\Model\Calendar();
-
-		$calendarRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\CalendarRepository', array('update'), array(), '', FALSE);
-		$calendarRepository->expects($this->once())->method('update')->with($calendar);
-		$this->inject($this->subject, 'calendarRepository', $calendarRepository);
-
-		$this->subject->updateAction($calendar);
-	}
-
-	/**
-	 * @test
-	 */
-	public function deleteActionRemovesTheGivenCalendarFromCalendarRepository() {
-		$calendar = new \Ki\KiCal\Domain\Model\Calendar();
-
-		$calendarRepository = $this->getMock('Ki\\KiCal\\Domain\\Repository\\CalendarRepository', array('remove'), array(), '', FALSE);
-		$calendarRepository->expects($this->once())->method('remove')->with($calendar);
-		$this->inject($this->subject, 'calendarRepository', $calendarRepository);
-
-		$this->subject->deleteAction($calendar);
+		$this->assertEquals('adm', $calendar->checkPermissions("505"));
+		$this->assertEquals('r', $calendar->checkPermissions("506"));
+		$this->assertEquals('rw', $calendar->checkPermissions("507"));
 	}
 }

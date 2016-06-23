@@ -36,14 +36,14 @@ class Event extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @var string
 	 */
-	protected $eventTitle;
+	protected $eventTitle = "";
 
 	/**
 	 * eventDate
 	 *
 	 * @var string
 	 */
-	protected $eventDate;
+	protected $eventDate = "";
 
 	/**
 	 * Returns the event title

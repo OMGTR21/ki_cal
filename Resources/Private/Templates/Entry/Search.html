@@ -23,22 +23,29 @@
 <script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/CreateCalendarView.js"></script>
 <script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/NewEntry.js"></script>
 
+<!-- Print all found entries -->
 <h2>Gefundene Einträge</h2><br />
 <f:for each="{queryResult}" as="result">
   <ul class="searchResult">
     <li><h4>{result.entryTitle}</h4></li>
-    <li>Datum: {result.entryDate}</li>
-    <li>Beschreibung: {result.description}</li>
-    <li>Start-Zeit: {result.startTime}</li>
-    <li>End-Zeit: {result.endTime}</li>
-    <li>Besucher: {result.visitor}</li>
-    <li>Firma: {result.company}</li>
-    <li>Kontakt: {result.contact}</li>
-    <li>Öffentlich: {result.public}</li>
-    <li>Bild: {result.image}</li>
+    <li><b>Datum:</b> <span class="date">{result.entryDate}</span></li>
+    <li><b>Beschreibung:</b> {result.description}</li>
+    <li><b>Start-Zeit:</b> {result.startTime}</li>
+    <li><b>End-Zeit:</b> {result.endTime}</li>
+    <li><b>Besucher:</b> {result.visitor}</li>
+    <li><b>Firma:</b> {result.company}</li>
+    <li><b>Kontakt:</b> {result.contact}</li>
+    <li><b>Öffentlich:</b> {result.public}</li>
+    <li><b>Bild:</b> <img src='{result.image}' alt='Kein Bild vorhanden.' width='200px' /></li>
   </ul>
   <hr>
   <br />
 </f:for>
 
 <f:link.action action="show" controller="Calendar" class="btn btn-default">Zurück zum Kalender</f:link.action>
+
+<!-- Adjust date format -->
+<script>
+
+  $(".date").html(moment($(".date").html()).format("DD.MM.YYYY"));
+</script>

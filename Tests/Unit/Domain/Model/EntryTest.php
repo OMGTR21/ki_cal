@@ -69,4 +69,211 @@ class EntryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->subject
 		);
 	}
+
+	/**
+	 * @test
+	 */
+	public function getDescriptionReturnsInitialValueForString() {
+		$this->assertSame(
+			'',
+			$this->subject->getDescription()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setDescriptionForStringSetsTitle() {
+		$this->subject->setDescription('Conceived at T3CON10');
+
+		$this->assertAttributeEquals(
+			'Conceived at T3CON10',
+			'description',
+			$this->subject
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getEntryDateReturnsInitialValueForString() {
+		$this->assertSame(
+			'',
+			$this->subject->getEntryDate()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setEntryDateForStringSetsTitle() {
+		$this->subject->setEntryDate('Conceived at T3CON10');
+
+		$this->assertAttributeEquals(
+			'Conceived at T3CON10',
+			'entryDate',
+			$this->subject
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getStartTimeReturnsInitialValueForString() {
+		$this->assertSame(
+			'',
+			$this->subject->getStartTime()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setStartTimeForStringSetsTitle() {
+		$this->subject->setStartTime('Conceived at T3CON10');
+
+		$this->assertAttributeEquals(
+			'Conceived at T3CON10',
+			'startTime',
+			$this->subject
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getEndTimeReturnsInitialValueForString() {
+		$this->assertSame(
+			'',
+			$this->subject->getEndTime()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setEndTimeForStringSetsTitle() {
+		$this->subject->setEndTime('Conceived at T3CON10');
+
+		$this->assertAttributeEquals(
+			'Conceived at T3CON10',
+			'endTime',
+			$this->subject
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getVisitorReturnsInitialValueForString() {
+		$this->assertSame(
+			'',
+			$this->subject->getVisitor()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setVisitorForStringSetsTitle() {
+		$this->subject->setVisitor('Conceived at T3CON10');
+
+		$this->assertAttributeEquals(
+			'Conceived at T3CON10',
+			'visitor',
+			$this->subject
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getCompanyReturnsInitialValueForString() {
+		$this->assertSame(
+			'',
+			$this->subject->getCompany()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setCompanyForStringSetsTitle() {
+		$this->subject->setCompany('Conceived at T3CON10');
+
+		$this->assertAttributeEquals(
+			'Conceived at T3CON10',
+			'company',
+			$this->subject
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getContactReturnsInitialValueForString() {
+		$this->assertSame(
+			'',
+			$this->subject->getContact()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setContactForStringSetsTitle() {
+		$this->subject->setContact('Conceived at T3CON10');
+
+		$this->assertAttributeEquals(
+			'Conceived at T3CON10',
+			'contact',
+			$this->subject
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPublicReturnsInitialValueForString() {
+		$this->assertSame(
+			'',
+			$this->subject->getPublic()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setPublicForStringSetsTitle() {
+		$this->subject->setPublic('Conceived at T3CON10');
+
+		$this->assertAttributeEquals(
+			'Conceived at T3CON10',
+			'public',
+			$this->subject
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getImageReturnsInitialValueForString() {
+		$this->assertSame(
+			'',
+			$this->subject->getImage()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setImageForStringSetsTitle() {
+		$this->subject->setImage('Conceived at T3CON10');
+
+		$this->assertAttributeEquals(
+			'Conceived at T3CON10',
+			'image',
+			$this->subject
+		);
+	}
 }

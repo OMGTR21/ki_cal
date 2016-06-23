@@ -1,9 +1,12 @@
-
 /* BASIC LAYOUT */
 
 #main_calendar {
-  height: auto;
-  width: auto;
+    height: auto;
+    width: auto;
+}
+
+body {
+  cursor: default;
 }
 
 /*
@@ -12,48 +15,48 @@
 }*/
 
 nav#month_nav, div#current_month, #calendar_second_nav, #calendar_fields, #user_actions {
-  display: inline-block;
+    display: inline-block;
 }
 header {
-  height: 60px;
-  border-bottom: 1px solid grey;
+    height: 60px;
+    border-bottom: 1px solid grey;
 }
 #current_month {
-  height: 60px;
-  width: 500px;
-  max-height: 60px;
-  vertical-align: top;
-  text-align: center;
+    height: 60px;
+    width: 500px;
+    max-height: 60px;
+    vertical-align: top;
+    text-align: center;
 }
 #current_month > h1 {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 #user_actions {
-  height: 60px;
-  width: 200px;
-  vertical-align: top;
+    height: 60px;
+    width: 200px;
+    vertical-align: top;
 }
 #month_nav {
-  height: 60px;
-  width: 500px;
-  vertical-align: top;
+    height: 60px;
+    width: 500px;
+    vertical-align: top;
 }
 #calendar_second_nav {
-  width: 300px;
-  height: 650px;
-  margin-top: 60px;
+    width: 300px;
+    height: 650px;
+    margin-top: 60px;
 }
 #calendar_fields {
-  width: 900px;
-  height: 650px;
-  vertical-align: top;
+    width: 900px;
+    height: 650px;
+    vertical-align: top;
 }
 
 /* The only way to use the full width of the site */
 
 #middleContent, #rightContent {
-  display: none;
+    display: none;
 }
 
 /* BASIC LAYOUT END */
@@ -65,25 +68,25 @@ header {
 /* Set the size of the month navigation buttons */
 
 .pager {
-  display: inline-block;
+    display: inline-block;
 }
 .pager > li > a {
-  width: 50px;
-  height: 30px;
-  margin: -20px 0 0 20px;
+    width: 50px;
+    height: 30px;
+    margin: -20px 0 0 20px;
 }
 .pager > li {
-  background: none;
+    background: none;
 }
 #switch_to_today_btn {
-  display: inline-block;
-  margin: -20px 0 0 20px;
+    display: inline-block;
+    margin: -20px 0 0 20px;
 }
 #current_date_indicator {
-  display: inline-block;
-  vertical-align: top;
-  margin: 10px 0px 0px 20px;
-  font-size: 18px;
+    display: inline-block;
+    vertical-align: top;
+    margin: 10px 0px 0px 20px;
+    font-size: 18px;
 }
 
 /* NAVIGATION BAR END */
@@ -92,11 +95,11 @@ header {
 /* CALENDAR SECOND NAV */
 
 #calendar_week_nav {
-  height: 200px;
-  margin-bottom: 160px;
+    height: 200px;
+    margin-bottom: 160px;
 }
 #calendar_date_nav {
-  height: 50px;
+    height: 50px;
 }
 
 /* CALENDAR SECOND NAV END */
@@ -105,50 +108,57 @@ header {
 /* CALENDAR FIELDS */
 
 #week_days {
-  height: 50px;
-  width: auto;
-  text-align: center;
+    height: 50px;
+    width: auto;
+    text-align: center;
 }
 .week_days_header {
-  display: inline-block;
-  text-align: center;
-  width: 120px;
-  margin-top: 20px;
-  font-size: 17px;
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+    margin-top: 20px;
+    font-size: 17px;
 }
 .calendar_rows {
-  text-align: center;
-  height: 120px;
-  margin: 0;
-  padding: 0;
+    text-align: center;
+    height: 120px;
+    margin: 0;
+    padding: 0;
 }
 .calendar_rows > li {
-  display: inline-block;
-  text-align: center;
-  width: 120px;
-  height: 100%;
-  border-top: 1px solid grey;
-  border-left: 1px solid grey;
-  padding: 0;
-  margin: 0;
-  vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+    height: 100%;
+    border-top: 1px solid grey;
+    border-left: 1px solid grey;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
 }
 .day_indicator {
-  text-align: right;
-}
-#current_month_wrapper > ul.calendar_rows > li {
-  text-align: right;
-  font-size: 8px;
-  font-weight: bold;
-}
-.pre_month_fields, .future_month_fields {
-  color: grey;
-  font-weight: normal;
+    text-align: right;
 }
 
+#current_month_wrapper > ul.calendar_rows > li {
+    text-align: right;
+    font-size: 13px;
+    font-weight: bold;
+    word-break: break-all;
+}
+
+
+.calendar_rows > li > a {
+  font-weight: 100;
+}
+
+.pre_month_fields, .future_month_fields {
+    color: grey;
+    font-weight: normal;
+}
 #new_entry_btn, #search_btn {
-  background: none;
-  border: none;
+    background: none;
+    border: none;
 }
 
 /* CALENDAR FIELDS END */
@@ -157,21 +167,21 @@ header {
 /* CALENDAR WEEKS NAV */
 
 .cw_buttons {
-  margin: 2px;
-  background: none;
-  width: 30px;
+    margin: 2px;
+    background: none;
+    width: 30px;
 }
 #calendar_week_nav > ul > li {
-  background: none;
+    background: none;
 }
 #switch_to_today_btn:hover, .cw_buttons:hover {
-  background: none;
-  background-color: #F64300;
-  color: white;
+    background: none;
+    background-color: #F64300;
+    color: white;
 }
 #calendar_week_nav > h3, #calendar_date_nav > h3 {
-  margin: 0 0 20px 0;
-  padding: 0;
+    margin: 0 0 20px 0;
+    padding: 0;
 }
 
 /* CALENDAR WEEKS NAV END */
@@ -180,11 +190,11 @@ header {
 /* MONTH / YEAR NAV */
 
 #calendar_date_nav > select {
-  width: auto;
-  margin-bottom: 20px;
+    width: auto;
+    margin-bottom: 20px;
 }
 #calendar_date_nav > input {
-  width: auto;
+    width: auto;
 }
 
 /* MONTH / YEAR NAV END */
@@ -193,13 +203,12 @@ header {
 /* NEW ENTRY MODAL */
 
 #new_entry_modal, #search_modal {
-  height: auto;
+    height: auto;
 }
-
 .modal_header {
-  border-bottom: 1px solid rgb(235, 235, 235);
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+    border-bottom: 1px solid rgb(235, 235, 235);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 /* NEW ENTRY MODAL END */

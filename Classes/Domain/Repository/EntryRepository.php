@@ -96,4 +96,24 @@ class EntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
     $query->matching($query->equals('public', '1'));
     return $query->execute();
   }
+
+  /**
+  * Get image from an entry
+  * @var \Ki\KiCal\Domain\Model\Entry $entr
+  */
+  public function getImageByUid(\Ki\KiCal\Domain\Model\Entry $entry) {
+
+    // Create query object
+    $query = $this->createQuery();
+
+    // Set plain SQL statement
+    $sql = 'SELECT * FROM `tx_kical_domain_model_entry` WHERE uid = ' . $entry->getUid();
+
+    $query->statement($sql);
+
+    // Execute query
+    $result = $query->execute();
+
+    return $result;
+  }
 }

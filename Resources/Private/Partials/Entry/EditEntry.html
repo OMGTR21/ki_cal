@@ -1,3 +1,5 @@
+<!-- Input fields for editing an entry -->
+
 <!-- JQUERY -->
 <script src="{f:uri.resource(path:'Scripts/jquery-2.2.2.min.js')}"></script>
 
@@ -23,60 +25,85 @@
 <script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/CreateCalendarView.js"></script>
 <script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/NewEntry.js"></script>
 
-  <label for="entryTitle">Titel</label>
-  <br />
-  <f:form.textfield property="entryTitle" class="form-control" value='{detailedEntry.entryTitle}'/>
-  <br />
-  <label for="description">Beschreibung</label>
-  <br />
-  <f:form.textfield property="description" class="form-control" value='{detailedEntry.description}'/>
-  <br />
-  <label for="entryDate">Datum</label>
-  <br />
-  <f:form.textfield property="entryDate" class="form-control datepickerInputField" value='{detailedEntry.entryDate}'/>
-  <br />
-  <label for="startTime">Start-Zeit</label>
-  <br />
-  <f:form.textfield property="startTime" class="form-control" value='{detailedEntry.startTime}'/>
-  <br />
-  <label for="entryDate">End-Zeit</label>
-  <br />
-  <f:form.textfield property="endTime" class="form-control" value='{detailedEntry.endTime}'/>
-  <br />
-  <div style="border-bottom: 1px solid #EBEBEB"></div>
-  <br />
-  <label for="entryDate">Besucher</label>
-  <br />
-  <f:form.textfield property="visitor" class="form-control" value='{detailedEntry.visitor}'/>
-  <br />
-  <label for="entryDate">Firma</label>
-  <br />
-  <f:form.textfield property="company" class="form-control" value='{detailedEntry.company}'/>
-  <br />
-  <label for="entryDate">Kontakt</label>
-  <br />
-  <f:form.textfield property="contact" class="form-control" value='{detailedEntry.contact}'/>
-  <br />
-  <div style="border-bottom: 1px solid #EBEBEB"></div>
-  <br />
-  <label for="entryDate">Öffentlich</label>
-  <br />
+<label for="entryTitle">Titel</label>
+<br />
+<f:form.textfield property="entryTitle" class="form-control toValidate" value='{detailedEntry.entryTitle}' />
+<br />
+<label for="description">Beschreibung</label>
+<br />
+<f:form.textfield property="description" class="form-control toValidate" value='{detailedEntry.description}' />
+<br />
+<label for="entryDate">Datum</label>
+<br />
+<f:form.textfield property="entryDate" class="form-control datepickerInputField datepicker toValidate" value='{detailedEntry.entryDate}' />
+<br />
+<label for="startTime">Start-Zeit</label>
+<br />
+<f:form.textfield property="startTime" class="form-control toValidate" value='{detailedEntry.startTime}' />
+<br />
+<label for="entryDate">End-Zeit</label>
+<br />
+<f:form.textfield property="endTime" class="form-control toValidate" value='{detailedEntry.endTime}' />
+<br />
+<div style="border-bottom: 1px solid #EBEBEB"></div>
+<br />
+<label for="entryDate">Besucher</label>
+<br />
+<f:form.textfield property="visitor" class="form-control toValidate" value='{detailedEntry.visitor}' />
+<br />
+<label for="entryDate">Firma</label>
+<br />
+<f:form.textfield property="company" class="form-control toValidate" value='{detailedEntry.company}' />
+<br />
+<label for="entryDate">Kontakt</label>
+<br />
+<f:form.textfield property="contact" class="form-control toValidate" value='{detailedEntry.contact}' />
+<br />
+<div style="border-bottom: 1px solid #EBEBEB"></div>
+<br />
+<label for="entryDate">Öffentlich</label>
+<br />
 
-  <f:if condition="{detailedEntry.public}!==0">
+<!-- Check if field "public" is set on 1 or 0 -->
+<f:if condition="{detailedEntry.public}!==0">
     <f:then>
-      <f:form.checkbox id='publicSelector' property="public" class="form-control" value='1' checked='{detailedEntry.public} == 1'/>
+        <f:form.checkbox id='publicSelector' property="public" class="form-control" value='1' checked='{detailedEntry.public} == 1' />
     </f:then>
     <f:else>
-      <f:form.checkbox property="public" class="form-control" value='1'/>
+        <f:form.checkbox property="public" class="form-control" value='1' />
     </f:else>
-  </f:if>
+</f:if>
 
-  <br />
-  <label for="entryDate">Bild anhängen</label>
-  <br />
-  <f:form.upload property="image" name="image" value='<a href="{detailedEntry.description}"></a>'/>
-  <br />
+<!-- Replace the current image or add a new one -->
+<br />
+<label for="entryDate">Bild anhängen</label>
+<br />
+<f:form.upload name="image" />
+<br />
 
-  <script>
+<!-- Attached image -->
+<img src='{detailedEntry.image}' width='200px' />
+
+<!-- Validate the values of the input fields -->
+<script src="typo3conf/ext/ki_cal/Resources/Public/Scripts/ValidateInputValues.js"></script>
+
+<script>
+    // Change the regional place and the format of the datepicker
+    $.datepicker.setDefaults($.datepicker.regional["de"]);
+    $('.datepicker').datepicker({
+        dateFormat: 'dd.mm.yy'
+    });
+
+    // Convert the database format to the german format
     $(".datepickerInputField").val(moment($(".datepickerInputField").val()).format("DD.MM.YYYY"));
-  </script>
+
+    // Validate values on input
+    $('.toValidate').keypress(function() {
+        validateEntryValues($(this), 'edit_entry');
+    });
+
+    // Validate on tab
+    $('.toValidate').keyup(function() {
+        validateEntryValues($(this), 'edit_entry');
+    });
+</script>

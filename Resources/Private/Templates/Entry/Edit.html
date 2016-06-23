@@ -1,33 +1,49 @@
-<!-- EDIT ENTRY MODAL -->
-<!-- Wrapper -->
-<div>
+<div id="edit_entry_wrapper">
 
-	<!-- Header of modal -->
-	<div class="modal_header">
-		<h4>Detaillierte Informationen</h4>
-	</div>
+  <!-- HEADER -->
+  <div class="modal-header">
+      <h4 id="edit_entry_title"></h4>
+  </div>
 
-	<!-- Body of modal -->
-	<div class="modal_body">
-		<f:form action="update" method="post" enctype="multipart/form-data" controller="Entry" name="entry" object="{detailedEntry}">
+  <!-- BODY -->
+  <div class="modal-body">
 
-			<!-- Get input fields -->
-			<f:render partial="Entry/EditEntry" arguments="{detailedEntry : detailedEntry}" />
-	</div>
+      <!-- FLUID FORM -->
+      <f:form action="update" method="post" enctype="multipart/form-data" controller="Entry" name="entry" object="{detailedEntry}">
 
-	<!-- Footer of modal -->
-	<div class="modal_footer">
+      <!-- RENDER INPUT FIELDS -->
+      <f:render partial="Entry/EditEntry" arguments="{detailedEntry : detailedEntry}"/>
 
-		<!-- submit button -->
-		<f:form.submit value="Eintrag speichern" class="btn btn-primary" />
+  </div>
 
-		<f:link.action class="btn btn-danger" action='delete' controller='Entry' arguments="{entry:detailedEntry.uid}">Eintrag löschen</f:link.action>
+  <div class="modal-footer">
 
-		<f:link.action action="show" controller="Calendar" class="btn btn-default">Zurück zum Kalender</f:link.action>
+      <!-- SUBMIT BUTTON -->
+      <f:form.submit value="Eintrag speichern" class="btn btn-primary"/>
 
-		</f:form>
+      <!-- DELETE ENTRY BUTTON -->
+      <f:link.action class="btn btn-danger" action="delete" controller="Entry" arguments="{entry:detailedEntry.uid}">Eintrag löschen</f:link.action>
 
-	</div>
+      <!-- BACK TO CALENDAR BUTTON -->
+      <f:link.action action="show" controller="Calendar" class="btn btn-default">Zurück zum Kalender</f:link.action>
 
+      <!-- CLOSE FORM -->
+      </f:form>
+  </div>
 </div>
-<!-- EDIT ENTRY MODAL END -->
+
+<!-- CHANGE THE EDIT ENTRY TITLE -->
+<script>
+
+  var title = $('input[name="tx_kical_fecal[entry][entryTitle]"]').val();
+  var visitor = $('input[name="tx_kical_fecal[entry][visitor]"]').val();
+
+  if(title != '') {
+
+    $('h4').html('Bearbeiten von "' + title + '" (' + $('input[name="tx_kical_fecal[entry][entryDate]"]').val() + ')');
+  }else {
+
+    $('h4').html('Bearbeiten von "' + visitor + '" (' + $('input[name="tx_kical_fecal[entry][entryDate]"]').val() + ')');
+  }
+
+</script>

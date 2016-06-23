@@ -1,34 +1,39 @@
+<div id="edit_entry_wrapper">
 
-<!-- EDIT ENTRY MODAL -->
-	<!-- Wrapper -->
-	<div>
+    <!-- HEADER -->
+    <div class="modal-header">
+        <h4 id="edit_entry_title"></h4>
+    </div>
 
-		<!-- Header of modal -->
-		<div class="modal_header">
-			<h4>Eintrag bearbeiten</h4>
-		</div>
+    <!-- BODY -->
+    <div class="modal-body">
 
-		<!-- Body of modal -->
-		<div class="modal_body">
-			<f:form action="update" method="post" enctype="multipart/form-data" controller="Event" name="event" object="{detailedEntry}">
+        <!-- FLUID FORM -->
+        <f:form action="update" method="post" enctype="multipart/form-data" controller="Event" name="event" object="{detailedEntry}">
 
-				<!-- Get input fields -->
-				<f:render partial="Event/EditEvent" arguments="{detailedEntry : detailedEntry}"/>
-		</div>
+        <!-- RENDER INPUT FIELDS -->
+        <f:render partial="Event/EditEvent" arguments="{detailedEntry : detailedEntry}"/>
 
-		<!-- Footer of modal -->
-		<div class="modal_footer">
+    </div>
 
-			<!-- submit button -->
-			<f:form.submit value="Eintrag speichern" class="btn btn-primary" />
+    <div class="modal-footer">
 
-			<f:link.action class="btn btn-danger" action='delete' controller='Event' arguments="{event:detailedEntry.uid}">Eintrag löschen</f:link.action>
+        <!-- SUBMIT BUTTON -->
+        <f:form.submit value="Eintrag speichern" class="btn btn-primary"/>
 
-			<f:link.action action="show" controller="Calendar" class="btn btn-default">Zurück zum Kalender</f:link.action>
+        <!-- DELETE ENTRY BUTTON -->
+        <f:link.action class="btn btn-danger" action="delete" controller="Event" arguments="{event:detailedEntry.uid}">Eintrag löschen</f:link.action>
 
-			</f:form>
+        <!-- BACK TO CALENDAR BUTTON -->
+        <f:link.action action="show" controller="Calendar" class="btn btn-default">Zurück zum Kalender</f:link.action>
 
-		</div>
+        <!-- CLOSE FORM -->
+        </f:form>
+    </div>
+</div>
 
-	</div>
-<!-- EDIT ENTRY MODAL END -->
+<!-- CHANGE THE EDIT ENTRY TITLE -->
+<script>
+  $('#edit_entry_title').html('Bearbeiten von "' + $('input[name="tx_kical_fecal[event][eventTitle]"]').val() +
+  '" (' + $('input[name="tx_kical_fecal[event][eventDate]"]').val() + ')');
+</script>

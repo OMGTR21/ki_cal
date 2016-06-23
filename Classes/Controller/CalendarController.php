@@ -1,5 +1,6 @@
 <?php
 namespace Ki\KiCal\Controller;
+error_reporting(E_ALL ^ E_NOTICE);
 
 /***************************************************************
  *
@@ -68,6 +69,9 @@ class CalendarController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @return void
 	 */
 	public function showAction() {
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
 		$this->redirect('list');
 	}
 
@@ -78,139 +82,97 @@ class CalendarController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	*/
 	public function listAction() {
 
-		$calEntries = $this->entryRepository->findAll();
-		$calEvents = $this->eventRepository->findAll();
-		$this->cacheHash = new \TYPO3\CMS\Frontend\Page\CacheHashCalculator();
+		$all_calendar_entries = null;
+		$all_calendar_events = null;
+		$json_entries = '[';
 
-		$jsonEntries = '[';
+		// Get all calendar entries
+		$all_calendar_entries = $this->entryRepository->findAll();
 
-		foreach($calEntries as $entry) {
+		// Get all calendar events
+		$all_calendar_events = $this->eventRepository->findAll();
 
-			$actionLinkEntry = $this->generateActionLink("Entry", "edit", $entry, "entry");
+		// Check if the calendar entries and events are objects
+		try {
+			if(is_object($all_calendar_events) === False || $all_calendar_events === False) {
+				throw new \Exception('Error while creating entry objects.');
+			}
+		} catch (\Exception $ex) {
+			echo $ex->getMessage() . ' in ' . $ex->getFile() . ' (Line ' . $ex->getLine() . ') ';
+		}
 
-			if($entry->getEntryTitle == "") {
-				$jsonEntries = $jsonEntries . "{'entryTitle':'" . $entry->getVisitor() . "',";
-				$jsonEntries = $jsonEntries . "'actionLink':'" . $actionLinkEntry . "',";
-				$jsonEntries = $jsonEntries . "'visitor':'" . $entry->getVisitor() . "',";
-				$jsonEntries = $jsonEntries . "'entryDate':'" . $entry->getEntryDate() . "'},";
+		// Go through all calendar entries
+		foreach($all_calendar_entries as $entry) {
+
+			$action_link_entry = $this->generateActionLink("Entry", "edit", $entry, "entry");
+
+			// If the current entry has no entry title, take the visitor
+			if(strcmp($entry->getEntryTitle, '') === 0) {
+				$json_entries = $json_entries . "{'entryTitle':'" . $entry->getEntryTitle() . "',";
+				$json_entries = $json_entries . "'actionLink':'" . $action_link_entry . "',";
+				$json_entries = $json_entries . "'visitor':'" . $entry->getVisitor() . "',";
+				$json_entries = $json_entries . "'entryDate':'" . $entry->getEntryDate() . "'},";
 			}else {
-				$jsonEntries = $jsonEntries . "{'entryTitle':'" . $entry->getEntryTitle() . "',";
-				$jsonEntries = $jsonEntries . "'actionLink':'" . $actionLinkEntry . "',";
-				$jsonEntries = $jsonEntries . "'visitor':'" . $entry->getVisitor() . "',";
-				$jsonEntries = $jsonEntries . "'entryDate':'" . $entry->getEntryDate() . "'},";
+				$json_entries = $json_entries . "{'entryTitle':'" . $entry->getEntryTitle() . "',";
+				$json_entries = $json_entries . "'actionLink':'" . $action_link_entry . "',";
+				$json_entries = $json_entries . "'visitor':'" . $entry->getVisitor() . "',";
+				$json_entries = $json_entries . "'entryDate':'" . $entry->getEntryDate() . "'},";
 			}
 		}
 
-		$jsonEntries = substr($jsonEntries, 0, -1);
-		$jsonEntries .= ']';
+		$json_entries = substr($json_entries, 0, -1);
+		$json_entries .= ']';
 
-		$jsonEvents = '[';
+		// Create JSON string for the events
+		$json_events = '[';
 
-		foreach($calEvents as $event) {
-			$actionLinkEvent = $this->generateActionLink("Event", "edit", $event, "event");
+		// Go through all calendar events
+		foreach($all_calendar_events as $event) {
+			$action_link_event = $this->generateActionLink("Event", "edit", $event, "event");
+			// echo $action_link_event . ' // ' . $event->getEventDate() . '<br />';
 
-			$jsonEvents = $jsonEvents . "{'eventTitle':'" . $event->getEventTitle() . "',";
-			$jsonEvents = $jsonEvents .  "'actionLink':'" . $actionLinkEvent . "',";
-			$jsonEvents = $jsonEvents .  "'eventDate':'" . $event->getEventDate() . "'},";
-
-
+			$json_events = $json_events . "{'eventTitle':'" . $event->getEventTitle() . "',";
+			$json_events = $json_events .  "'actionLink':'" . $action_link_event . "',";
+			$json_events = $json_events .  "'eventDate':'" . $event->getEventDate() . "'},";
 		}
 
-		$jsonEvents = substr($jsonEvents, 0, -1);
-		$jsonEvents .= ']';
+		$json_events = substr($json_events, 0, -1);
+		$json_events .= ']';
 
-		// echo $jsonEvents;
-		// exit;
-
-		// In case of no entries where found
-		if($jsonEvents == "]") {
-			$jsonEvents = null;
+		// If no entries were found, set the var to null
+		if($json_events == "]") {
+			$json_events = null;
 		}
-		if($jsonEntries == "]") {
-			$jsonEntries = null;
+		if($json_entries == "]") {
+			$json_entries = null;
 		}
 
-		$this->view->assign('Entries', $calEntries);
-		$this->view->assign('Events', $calEvents);
-		$this->view->assign('jsonEntries', $jsonEntries);
-		$this->view->assign('jsonEvents', $jsonEvents);
+		// Asign the entries to the view
+		$this->view->assign('Entries', $all_calendar_entries);
+		$this->view->assign('Events', $all_calendar_events);
+		$this->view->assign('jsonEntries', $json_entries);
+		$this->view->assign('jsonEvents', $json_events);
 	}
 
 	/**
-	 * action new
-	 *
-	 * @return void
-	 */
-	public function newAction() {
-
-	}
-
-	/**
-	 * action create
-	 *
-	 * @param \Ki\KiCal\Domain\Model\Calendar $newCalendar
-	 * @return void
-	 */
-	public function createAction(\Ki\KiCal\Domain\Model\Calendar $newCalendar) {
-		$this->calendarRepository->add($newCalendar);
-		$this->redirect('list');
-	}
-
-	/**
-	 * action edit
-	 *
-	 * @param \Ki\KiCal\Domain\Model\Calendar $calendar
-	 * @ignorevalidation $calendar
-	 * @return void
-	 */
-	public function editAction(\Ki\KiCal\Domain\Model\Calendar $calendar) {
-		$this->view->assign('calendar', $calendar);
-	}
-
-	/**
-	 * action update
-	 *
-	 * @param \Ki\KiCal\Domain\Model\Calendar $calendar
-	 * @return void
-	 */
-	public function updateAction(\Ki\KiCal\Domain\Model\Calendar $calendar) {
-		$this->calendarRepository->update($calendar);
-		$this->redirect('list');
-	}
-
-	/**
-	 * action delete
-	 *
-	 * @param \Ki\KiCal\Domain\Model\Calendar $calendar
-	 * @return void
-	 */
-	public function deleteAction(\Ki\KiCal\Domain\Model\Calendar $calendar) {
-		$this->calendarRepository->remove($calendar);
-		$this->redirect('list');
-	}
-
+	* Function for file upload
+	*/
 	public static function fileUpload() {
 
-		$targetDir = $_SERVER["DOCUMENT_ROOT"] . "\\" . "fileadmin\user_upload\calendar\\";
+		// Set the target directory for the file
+		$target_dir = $_SERVER['DOCUMENT_ROOT'] . '/fileadmin/user_upload/calendar/';
 
-		foreach($_FILES["tx_kical_fecal"]["name"] as $filetype=>$value) {
+		// Get the file name
+		$filename = $_FILES['tx_kical_fecal']['name']['new_entry_data']['image'];
 
-			$filename = $value;
-			$fileDir = $targetDir . $filename;
+		// Create full path
+		$full_path = $target_dir . $filename;
 
-			move_uploaded_file($_FILES["tx_kical_fecal"]["tmp_name"][$filetype], $fileDir);
-		}
-	}
+		// Get the temp file name
+		$temp_filename = $_FILES['tx_kical_fecal']['tmp_name']['new_entry_data']['image'];
 
-	public function changeMonthAction() {
-
-		$events = $this->eventRepository->findAll();
-		$entries = $this->entryRepository->findAll();
-
-		$this->view->assign('Events', $events);
-		$this->view->assign('Entries', $entries);
-
-		exit();
+		// Move the file
+		move_uploaded_file($temp_filename, $full_path);
 	}
 
 	/**
@@ -221,24 +183,29 @@ class CalendarController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	* @param string $type
 	* @return string $actionLink
 	*/
-	public function generateActionLink($controller, $action, $object, $type) {
+	public function generateActionLink($controller, $controller_action, $entry_object, $entry_type) {
 
-		$actionLink = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?';
-		$query = array(
-			'id' => intval($GLOBALS['TSFE']->id)
+		// Get current URL
+		$action_link = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?';
+
+		// Get Typo3 site ID
+		$typo_site_id = intval($GLOBALS['TSFE']->id);
+
+		// Get UID of the current entry
+		$entry_uid = $entry_object->getUid();
+
+		// Create array with url parts
+		$http_url_arr = array(
+			'id' => $typo_site_id,
+			'tx_kical_fecal' => array(
+				'action' => $controller_action,
+				'controller' => $controller,
+				$entry_type => $entry_uid
+			)
 		);
 
-		$query["tx_kical_fecal"] = array();
-		$query["tx_kical_fecal"]["controller"] = $controller;
-
-		$cacheHashArray = $this->cacheHash->getRelevantParameters(\TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $query));
-		$query['cHash'] = $this->cacheHash->calculateCacheHash($cacheHashArray);
-
-		$query["tx_kical_fecal"][$type] = $object->getUid();
-		$query["tx_kical_fecal"]["action"] = $action;
-
-		$actionLink = $actionLink . http_build_query($query);
-		return $actionLink;
+		// Create action url
+		return $action_link . http_build_query($http_url_arr);
 	}
 
 	/**

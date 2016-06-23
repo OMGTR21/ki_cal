@@ -1,5 +1,6 @@
 <?php
 namespace Ki\KiCal\Controller;
+error_reporting(E_ALL ^  E_NOTICE);
 
 /***************************************************************
  *
@@ -39,40 +40,39 @@ class EntryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 */
 	protected $entryRepository = NULL;
 
+
 	/**
-	 * action create entry
+	 * Create a new entry
 	 *
-	 * @param \Ki\KiCal\Domain\Model\Entry $newEntry
+	 * @param \Ki\KiCal\Domain\Model\Entry $new_entry_data
 	 * @return void
 	 */
-	public function createAction(\Ki\KiCal\Domain\Model\Entry $newEntry) {
+	public function createAction(\Ki\KiCal\Domain\Model\Entry $new_entry_data) {
 
-		// Check Permissions
-		if(\Ki\KiCal\Controller\CalendarController::checkPermissions($GLOBALS["TSFE"]->fe_user->user["usergroup"]) == "adm" ||
-			\Ki\KiCal\Controller\CalendarController::checkPermissions($GLOBALS["TSFE"]->fe_user->user["usergroup"]) == "rw") {
+		// Create and set the full image path
+			$full_path = ('/fileadmin/user_upload/calendar/' . $_FILES['tx_kical_fecal']['name']['image']);
+		$new_entry_data->setImage($full_path);
 
-			$image = $newEntry->getImage();
-			$newEntry->setImage($_SERVER["DOCUMENT_ROOT"] . "\\" . "fileadmin\user_upload\calendar\\" . $image["name"]);
+		// Process the file upload
+		CalendarController::fileUpload();
 
-			CalendarController::fileUpload();
+		// Convert the date to the db matching format
+		$new_entry_data->setEntryDate(date("Y-m-d", strtotime($new_entry_data->getEntryDate())));
 
-			// Convert date format for db
-			$newEntry->setEntryDate(date("Y-m-d", strtotime($newEntry->getEntryDate())));
+		// Create a new entry
+		$this->entryRepository->add($new_entry_data);
 
-			// Create new entry in db
-			$this->entryRepository->add($newEntry);
+		// User info
+		$this->addFlashMessage('<div class="alert alert-success alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<strong>Mitteilung:</strong> Der Eintrag wurde erfolgreich erstellt.
+		</div>',
+		 \TYPO3\CMS\Core\Messaging\FlashMessage::OK,
+		 TRUE
+		);
 
-			// Get back to the calendar
-			$this->redirect('list', 'Calendar');
-			exit;
-		}else {
-			$this->flashMessageContainer->add('<div class="alert alert-warning alert-dismissible" role="alert">
-		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<strong>Warnung!</strong> Sie besitzen keine Rechte zum Ausführen dieser Aktion.
-			</div>', "", \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
-			$this->redirect('list', 'Calendar');
-			exit;
-		}
+		// Get back to the calendar
+		$this->redirect('list', 'Calendar');
 	}
 
 	/**
@@ -83,8 +83,19 @@ class EntryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * @return void
 	 */
 	public function editAction(\Ki\KiCal\Domain\Model\Entry $entry) {
-		$entryData = $this->entryRepository->findByUid($entry->getUid());
-		$this->view->assign('detailedEntry', $entryData);
+
+		// Get the entry with the given UID
+		$entry_data = $this->entryRepository->findByUid($entry->getUid());
+
+		// Get image path
+		$image = $this->entryRepository->getImageByUid($entry);
+		$image_arr = $image->toArray();
+
+		// Set image path
+		$entry_data->setImage($image_arr[0]->getImage());
+
+		// Assign the entry data to the view
+		$this->view->assign('detailedEntry', $entry_data);
 	}
 
 	/**
@@ -94,8 +105,35 @@ class EntryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * @return void
 	 */
 	public function updateAction(\Ki\KiCal\Domain\Model\Entry $entry) {
+
+		// Create and set the full image path
+		$full_path = ('/fileadmin/user_upload/calendar/' . $_FILES['tx_kical_fecal']['name']['image']);
+		$entry->setImage($full_path);
+
+		var_dump($entry);
+		// exit;
+
+		// Process the file upload
+		CalendarController::fileUpload();
+
+		// Adjust date format for the database
+		$entry->setEntryDate(date("Y-m-d", strtotime($entry->getEntryDate())));
+
+		// Update the entry
 		$this->entryRepository->update($entry);
+
+		// User info
+		$this->addFlashMessage('<div class="alert alert-success alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<strong>Mitteilung:</strong> Der Eintrag wurde erfolgreich aktualisiert.
+		</div>',
+		 \TYPO3\CMS\Core\Messaging\FlashMessage::OK,
+		 TRUE
+		);
+
+		// Go back to the calendar
 		$this->redirect('list', 'Calendar');
+		exit;
 	}
 
 	/**
@@ -105,8 +143,22 @@ class EntryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * @return void
 	 */
 	public function deleteAction(\Ki\KiCal\Domain\Model\Entry $entry) {
+
+		// Remove the entry
 		$this->entryRepository->remove($entry);
+
+		// User info
+		$this->addFlashMessage('<div class="alert alert-success alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<strong>Mitteilung:</strong> Der Eintrag wurde erfolgreich gelöscht.
+		</div>',
+		 \TYPO3\CMS\Core\Messaging\FlashMessage::OK,
+		 TRUE
+		);
+
+		// Go back to the calendar
 		$this->redirect('list', 'Calendar');
+		exit;
 	}
 
 	/**
@@ -116,9 +168,11 @@ class EntryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * @return void
 	 */
 	public function searchAction(\Ki\KiCal\Domain\Model\Entry $searchData) {
+		// Search with the overgiven criterias
 		$result = $this->entryRepository->getEntry($searchData);
+
+		// Give results to view
 		$this->view->assign('queryResult', $result);
-		exit;
 	}
 
 }

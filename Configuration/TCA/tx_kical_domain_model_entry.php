@@ -177,8 +177,15 @@ return array(
 			),
 		),
 		'image' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:ki_cal/Resources/Private/Language/locallang_db.xlf:tx_kical_domain_model_entry.public',
-		)
-		)
+			'exclude' => 0,
+			'label' => 'Image',
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('image', array(
+				'appearance' => array(
+					'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
+				),
+				'minitems' => 1,
+				'maxitems' => 1,
+			), $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']),
+		),
+)
 );
